@@ -1,12 +1,12 @@
 import React from 'react'
-import FetchData from './Components/FetchData'
+// import FetchApi from './Components/FetchApi';
 import Home from './Components/Home';
 import "./index.css"
 
 const App = () => {
     return (
         <div>
-            {/* <FetchData/> */}
+           {/* <FetchApi/> */}
             <Home/>
         </div>
     )

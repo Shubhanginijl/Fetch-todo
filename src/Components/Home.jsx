@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ReactPaginate from "react-paginate";
 import "./home.css";
 
-// import "./Home.css";
 
 const Home = () => {
   let [state, setState] = useState([]);
   let [loading, setLoading] = useState(false);
   let [pageNumber, setPageNumber] = useState(0);
+//   let [firstPage,setFirstPage]=useState(0);
   let userPerPage = 10;
   let pageVisited = pageNumber * userPerPage;
 
@@ -17,9 +16,21 @@ const Home = () => {
     .then(res=>{
         console.log(res.data)
         setState(res.data)
-        // setPagination(_(res.data).slice(0).take(pageSize).value())
     })
   }, []);
+  let handlePrev=()=>{
+      setPageNumber(pageNumber-1);
+  }
+  let handlenext=()=>{
+    setPageNumber(pageNumber+1);
+}
+let handleStart=()=>{
+    setPageNumber(0);
+}
+let handleLast=()=>{
+    let pageCount = Math.ceil(state.length / userPerPage);
+    setPageNumber(pageCount-1);
+}
   let displayUser = state
     .slice(pageVisited, pageVisited + userPerPage)
     .map(x => (
@@ -29,14 +40,14 @@ const Home = () => {
         <td>{x.title}</td>
         <td>
         <p className={x.completed ? "btn btn-success" :"btn btn-danger"}>
-             {x.completed ? "completed" :"pending"}
+             {x.completed ? "Yes" :"No"}
          </p>
            </td>
       </tr>
     ));
   
 
-  let pageCount = Math.ceil(state.length / userPerPage);
+  
 
   let changePage = ({ selected }) => {
     setPageNumber(selected);
@@ -59,19 +70,11 @@ const Home = () => {
           <tbody>{displayUser}</tbody>
         </table>
       )}
-      <nav className='d-flex justify-content-center'>
-      <ReactPaginate
-        className="pagination"
-        previousLable={"Previous"}
-        nextLable={"Next"}
-        pageCount={pageCount}
-        onPageChange={changePage}
-        containerClass={"paginationBttns"}
-        previousLinkClassName={"previousBttn"}
-        nextLinkClassName={"nextBttn"}
-        disableClassName={"paginationDisabled"}
-        activeClassName={"paginationActive"}
-      />
+      <nav className='d-flex justify-content-center' id="navbar">
+          <button className="prev" onClick={handlePrev}>previous</button>
+          <button className="start"  onClick={handleStart}>start</button>
+          <button className="last"  onClick={handleLast}>last</button>
+          <button className="next"  onClick={handlenext}>next</button>
       </nav>
     </section>
   );

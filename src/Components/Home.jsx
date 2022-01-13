@@ -12,19 +12,6 @@ const Home = () => {
   let userPerPage = 10;
   let pageVisited = pageNumber * userPerPage;
 
-  let displayUser = state
-    .slice(pageVisited, pageVisited + userPerPage)
-    .map(x => (
-      <tr key={x.id} className="bodyrow">
-        <td>{x.id}</td>
-        <td>{x.title}</td>
-        <td>
-        <p className={x.completed ? "btn btn-success" :"btn btn-danger"}>
-             {x.completed ? "completed" :"pending"}
-         </p>
-           </td>
-      </tr>
-    ));
   useEffect(() => {
     axios.get("https://jsonplaceholder.typicode.com/todos")
     .then(res=>{
@@ -33,6 +20,21 @@ const Home = () => {
         // setPagination(_(res.data).slice(0).take(pageSize).value())
     })
   }, []);
+  let displayUser = state
+    .slice(pageVisited, pageVisited + userPerPage)
+    .map(x => (
+      <tr key={x.id} className="bodyrow">
+        <td>{x.id}</td>
+        <td>{x.userId}</td>
+        <td>{x.title}</td>
+        <td>
+        <p className={x.completed ? "btn btn-success" :"btn btn-danger"}>
+             {x.completed ? "completed" :"pending"}
+         </p>
+           </td>
+      </tr>
+    ));
+  
 
   let pageCount = Math.ceil(state.length / userPerPage);
 
@@ -40,7 +42,7 @@ const Home = () => {
     setPageNumber(selected);
   };
   return (
-    <section>
+    <section className="paginationBlock">
       {loading === true ? (
         "loading...."
       ) : (
@@ -48,6 +50,7 @@ const Home = () => {
           <thead>
             <tr className="headRow">
               <th>id</th>
+              <th>UserId</th>
               <th>title</th>
               <th>completed</th>
             </tr>
